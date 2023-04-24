@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.13.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\jouet.Chess\jouet.Chess.csproj" />
+    <ProjectReference Include="..\jouet.Collections\jouet.Collections.csproj" />
+    <ProjectReference Include="..\jouet.Utilities\jouet.Utilities.csproj" />
+  </ItemGroup>
+
+</Project>
