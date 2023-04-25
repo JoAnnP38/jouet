@@ -927,54 +927,30 @@ namespace jouet.Chess
             halfMoveClock = 0;
             fullMoveCounter = 0;
             hash = 0;
+            gameStack.Clear();
         }
 
         #region Positional Status
 
         public bool IsEnPassantValid(Color color)
         {
-            if (enPassant == Index.NONE)
-            {
-                return false;
-            }
-
-            return (PawnDefends(color, enPassant) & Pawns & UnitBitBoard(color)) != 0;
+            return (enPassant != Index.NONE) && (PawnDefends(color, enPassant) & Pawns & UnitBitBoard(color)) != 0;
         }
 
         public bool IsSquareAttackedByColor(int square, Color color)
         {
             ulong units = UnitBitBoard(color);
             ulong pawns = Pawns & units;
-            if ((PawnDefends(color, square) & pawns) != 0)
-            {
-                return true;
-            }
-
             ulong knights = Knights & units;
-            if ((knightMoves[square] & knights) != 0)
-            {
-                return true;
-            }
-
             ulong kings = Kings & units;
-            if ((kingMoves[square] & kings) != 0)
-            {
-                return true;
-            }
-
             ulong dSliders = (Bishops | Queens) & units;
-            if ((GetPieceMoves(Piece.Bishop, square, all) & dSliders) != 0)
-            {
-                return true;
-            }
-
             ulong oSliders = (Rooks | Queens) & units;
-            if ((GetPieceMoves(Piece.Rook, square, all) & oSliders) != 0)
-            {
-                return true;
-            }
 
-            return false;
+            return (PawnDefends(color, square) & pawns) != 0 ||
+                   (knightMoves[square] & knights) != 0 ||
+                   (kingMoves[square] & kings) != 0 ||
+                   (GetPieceMoves(Piece.Bishop, square, all) & dSliders) != 0 ||
+                   (GetPieceMoves(Piece.Rook, square, all) & oSliders) != 0;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

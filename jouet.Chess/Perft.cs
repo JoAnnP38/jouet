@@ -27,16 +27,14 @@ namespace jouet.Chess
             for (int n = 0; n < list.Count; n++)
             {
                 ulong move = list[n];
-                if (!position.MakeMove(move))
+                if (position.MakeMove(move))
                 {
-                    continue;
+                    string strMove = Move.ToString(move);
+                    string fen = position.ToString("F");
+                    ulong nodes = depth == 1 ? 1 : Expand(depth - 1);
+                    results.Add((strMove, fen, nodes));
+                    position.UnmakeMove();
                 }
-
-                string strMove = Move.ToString(move);
-                string fen = position.ToString("F");
-                ulong nodes = depth == 1 ? 1 : Expand(depth - 1);
-                results.Add((strMove, fen, nodes));
-                position.UnmakeMove();
             }
 
             moveListPool.Return(list);
@@ -51,12 +49,11 @@ namespace jouet.Chess
             for (int n = 0; n < list.Count; n++)
             {
                 ulong move = list[n];
-                if (!position.MakeMove(move))
+                if (position.MakeMove(move))
                 {
-                    continue;
+                    nodes += depth == 1 ? 1 : Expand(depth - 1);
+                    position.UnmakeMove();
                 }
-                nodes += depth == 1 ? 1 : Expand(depth - 1);
-                position.UnmakeMove();
             }
 
             moveListPool.Return(list);
